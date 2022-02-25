@@ -70,5 +70,6 @@ void fifo(char *traceFile, int nFrames, char *mode) {
     printf("Events in trace: %d\n", traceEvents);
     printf("Total disk reads: %d\n", numRead);
     printf("Total disk writes: %d\n", numWrite);
+    printf("Hit rate: %f\n", 1 - (numRead/(double)traceEvents));
 
 }
