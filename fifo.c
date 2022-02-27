@@ -12,6 +12,8 @@ void fifo(char *traceFile, int nFrames, char *mode) {
 
     pageTable *pT = malloc(nFrames * sizeof(pageTable));
     initializePageTable(pT, nFrames);
+
+    //read from file
     if (file != NULL) {
         while(fscanf(file, "%x %c", &address, &bitType) != EOF) {
             traceEvents++;
@@ -33,22 +35,22 @@ void fifo(char *traceFile, int nFrames, char *mode) {
             //Page is not in the page table
             if (inPageTable == 0) {
                 //check if there is any available space
-                int i = 0;
-                while (i < nFrames) {
-                    if (pT[i].pNum == -1) break;
-                    i++;
+                int j = 0;
+                while (j < nFrames) {
+                    if (pT[j].pNum == -1) break;
+                    j++;
                 }
                 
                 //if there is no space, eliminate first page
-                if (i == nFrames) {
+                if (j == nFrames) {
                     if (pT[0].rwBit == 1) {
                         numWrite++;
                         if (strcmp(mode, "debug") == 0)
                             printf("Writing to disk!\n");
                     }
-                    for (i = 0; i < nFrames - 1; i++) {
-                        pT[i].pNum = pT[i + 1].pNum;
-                        pT[i].rwBit = pT[i + 1].rwBit;
+                    for (j = 0; j < nFrames - 1; j++) {
+                        pT[j].pNum = pT[j + 1].pNum;
+                        pT[j].rwBit = pT[j + 1].rwBit;
                     }
                     if (bitType == 'R') {
                         pT[nFrames-1].rwBit = 0;
@@ -56,10 +58,10 @@ void fifo(char *traceFile, int nFrames, char *mode) {
                     }
                     pT[nFrames - 1].rwBit = -1;
                 }
-                pT[i].pNum = currPage;
-                if (bitType == 'W') pT[i].rwBit = 1;
+                pT[j].pNum = currPage;
+                if (bitType == 'W') pT[j].rwBit = 1;
                 if(strcmp(mode, "debug") == 0) 
-                    printf("Virtual page number %d is allocated in frame %d\n", currPage, i);
+                    printf("Virtual page number %d is allocated in frame %d\n", currPage, j);
                 numRead++;
             }
 
@@ -70,6 +72,6 @@ void fifo(char *traceFile, int nFrames, char *mode) {
     printf("Events in trace: %d\n", traceEvents);
     printf("Total disk reads: %d\n", numRead);
     printf("Total disk writes: %d\n", numWrite);
-    printf("Hit rate: %f\n", 1 - (numRead/(double)traceEvents));
+    printf("Hit: %.2f%%\n", (1 - (numRead/(double)traceEvents))*100);
 
 }

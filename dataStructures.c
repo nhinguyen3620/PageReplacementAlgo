@@ -5,7 +5,7 @@ void initializePageTable(pageTable pT[], int num) {
     while (i < num) {
         pT[i].pNum = -1;
         pT[i].rwBit = -1;
-        pT[i].lru = 0;
+        pT[i].leastUse = 0;
         i++;
     }
 }

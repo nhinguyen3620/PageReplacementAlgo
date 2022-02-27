@@ -3,7 +3,7 @@
 
 typedef struct pageTable {
     int pNum;
-    int lru;
+    int leastUse;
     int rwBit;
 } pageTable;
 

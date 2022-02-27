@@ -5,7 +5,6 @@
 #include "dataStructures.h"
 
 int main(int argc, char *argv[]) {
-    printf("debug");
     if (argc < 5 || argc > 6) {
         printf("Invalid arguments!");
     }
@@ -16,7 +15,6 @@ int main(int argc, char *argv[]) {
     traceFile = argv[1];
     nFrames = atoi(argv[2]);
     policy = argv[3];
-    printf("debug");
     if (argc == 5) {
         mode = argv[4];
         if (strcmp (policy, "fifo") == 0)
