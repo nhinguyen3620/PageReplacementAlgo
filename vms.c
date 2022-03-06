@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "dataStructures.h"
 #include "policies.h"
 
@@ -20,7 +21,7 @@ void vms(char *traceFile, int nFrames, int p, char *mode) {
     int wCounts = 0;
     char bitType;
     //init the primary and secondary buffer 
-    int nSecondaryBuffer =  (nFrames * p) / 100;
+    int nSecondaryBuffer =  round((nFrames * p) / 100);
     int npBuffer = nFrames - nSecondaryBuffer;
     //Primary buffer 
     pageTable *pBuffer = malloc(npBuffer * sizeof(pageTable));
@@ -164,15 +165,12 @@ void vms(char *traceFile, int nFrames, int p, char *mode) {
             printf("Total disk writes: %d\n", wCounts);
             printf("Hit: %.2f%%\n", (1 - (rCounts/(double)eCounts))*100);
         }
-            
     }
-    
 }
 
 void updateRWBit(pageTable *pTable, char bitType) {
-  if (pTable->rwBit == -1)
-  {{
-    if(bitType == 'W')
+  if (pTable->rwBit == -1){{
+      if(bitType == 'W')
         pTable->rwBit = 1;
     else pTable->rwBit = 0;
     }
