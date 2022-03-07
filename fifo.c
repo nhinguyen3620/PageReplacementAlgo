@@ -61,7 +61,7 @@ void fifo(char *traceFile, int nFrames, char *mode) {
                 pT[j].pNum = currPage;
                 if (bitType == 'W') pT[j].rwBit = 1;
                 if(strcmp(mode, "debug") == 0) 
-                    printf("Virtual page number %d is allocated in frame %d\n", currPage, j);
+                    printf("Virtual page number %d is in frame %d\n", currPage, j);
                 numRead++;
             }
 
